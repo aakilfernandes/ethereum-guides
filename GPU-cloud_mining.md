@@ -309,16 +309,23 @@ geth console
 
 ### Step 6 - Run the syncro between the Go and C++ clients and start mining Ether (finally!)
 
-* Start again **geth with RPC (remote procedure call) enabled**: 
+You need to have both the Go and C++ clients running simultaneously. We also want them to run in the background, that way if we drop our SSH connect - our miner keeps running. To do that we're coing to use a tool called `screen`.
+
+First lets start geth with RPC enabled
 
 ```
+screen
 geth --rpc console
 ```
+Then hit control-A and control-D.
 
-* In another window terminal (right click on the window terminal and select "_Duplicate session_", if you are using PuTTY for WIndows, if you are using MAC first click inside the Terminal Window, go up to the tool bar > Shell > New Window > New window with settings basic. Then copy and paste the ssh command at the beginning of this guide. Repeat this 4 times. , to start **ethminer**: 
+Now we're going to start the miner.
+
 ```
+screen
 ethminer -G --opencl-device 0
 ```
+
 
 _Note: if you're using the larger g2 instance with 4 GPUs (the 2.8) you may need to start ethminer 4 times, each time adding a --opencl-device <0..3> argument_ 
 
