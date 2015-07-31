@@ -309,16 +309,27 @@ geth console
 
 ### Step 6 - Run the syncro between the Go and C++ clients and start mining Ether (finally!)
 
-* Start again **geth with RPC (remote procedure call) enabled**: 
+We're going to want both the RPC client (written in Go) and the Miner (written in C++) to run simultaneously. We also want them to run in the background so that in case we drop our SSH connection, but the RPC and Miner keep running. To do that, we're going to use a tool called `screen`.
+
+* First lets start the RPC client
 
 ```
+screen
 geth --rpc console
 ```
 
-* In another window terminal (right click on the window terminal and select "_Duplicate session_", if you are using PuTTY for WIndows, if you are using MAC first click inside the Terminal Window, go up to the tool bar > Shell > New Window > New window with settings basic. Then copy and paste the ssh command at the beginning of this guide. Repeat this 4 times. , to start **ethminer**: 
+Then hit `control-A`, then hit `control-D`
+
+* Now lets start the miner
+ 
 ```
+screen
 ethminer -G --opencl-device 0
 ```
+
+Then hit control-A then hit control-D.
+
+Enter `screen -ls` and verify that you have two detached screens running in the background. You can enter back into that screen and check the output by entering `screen -x ID_OF_SCREEN`. You can exit out re-detach from the screen by entering `control-A`, then `control-D`
 
 _Note: if you're using the larger g2 instance with 4 GPUs (the 2.8) you may need to start ethminer 4 times, each time adding a --opencl-device <0..3> argument_ 
 
@@ -337,8 +348,6 @@ PICTURE HERE
 _Note, if you encounter any issue or bug on this part 2 of the guide, please see the notes and comments at [Stephan Tual's GPU mining post](http://forum.ethereum.org/discussion/197/mining-faq-live-updates#latest)_
 
 ## Q&A
-
-**Q**: I mined some ETH. Now, I want to stop / terminate the instance. What should I do to keep my ETH safe? 
 
 **Q**: Ethereum blockchain sync: how long does it take to download the full blockchain?  
 **A**: You have to wait few hours, depending on the instance of your choice (one or 4 cores) and other factors.
@@ -376,31 +385,6 @@ Once you are done with your mining you have two choices:
   * Click Yes, Terminate when prompted for confirmation.
 
 **_Thanks to paul_bxd of the Ethereum forum who initiated us to cloud mining with Ethereum and AWS EC2. Without his help and resources we would not be able to put this guide together._**
-
-
-## Troubleshooting
-
-
-=======
-
-Errors
-
-**JSON-RPC error**
-
-re-generate the DAG
-
-**Failed: broken pipe/ connection timeout**
-
-(everything is stuck and you can't connect to your instance)
-
-**one core of the gpu says: bus error**
-
-
-
-
-
-
-
 
 ## Special announcement
 
